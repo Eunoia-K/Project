@@ -103,7 +103,7 @@ amount|payinfo|int|10|||결제/취소금액|성공시|
 vat|payinfo|int|10|||부가가치세|성공시|
 savetime||date|||||성공시|
 
-### 4. 빌드 및 실행방법
+### 4. 테스트결과
 ```
 POSTMAN 사용 
 ```
