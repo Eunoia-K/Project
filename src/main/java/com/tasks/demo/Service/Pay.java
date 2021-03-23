@@ -38,14 +38,15 @@ public class Pay {
 		{
 			throw new ApiException(ExceptionEnum.PAYMENT_03);
 		}
-		/*
+		
 		try {
-			SimpleDateFormat  dateFormat = new  SimpleDateFormat("mmyy");
+			SimpleDateFormat  dateFormat = new  SimpleDateFormat("MMyy");
+			dateFormat.setLenient(false);
 			dateFormat.parse(payDto.getExpiryDate());
 		}catch( Exception e){
 			throw new ApiException(ExceptionEnum.PAYMENT_03);
 		}
-		*/
+		
 		
 		//카드정보 암호화하기
 		String cardinfo = payDto.getCardno()+"|"+payDto.getExpiryDate()+"|"+payDto.getCvc();
