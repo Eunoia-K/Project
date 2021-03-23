@@ -107,4 +107,15 @@ savetime||date|||||성공시|
 ```
 POSTMAN 사용 
 ```
+**-결제API**  
+<img src="https://user-images.githubusercontent.com/80779555/112127551-e8e6d100-8c08-11eb-91d5-b09cb0cf44b9.png" width="350">
+<img src="https://user-images.githubusercontent.com/80779555/112127560-eab09480-8c08-11eb-8442-170a164c837c.png" width="350">
+  
+**-조회API**  
+<img src="https://user-images.githubusercontent.com/80779555/112127564-eab09480-8c08-11eb-805a-da39452d411b.png" width="350">
+<img src="https://user-images.githubusercontent.com/80779555/112127566-eb492b00-8c08-11eb-8288-559e9786a4c7.png" width="350">  
+**- 결제취소API**  
+<img src="https://user-images.githubusercontent.com/80779555/112127569-eb492b00-8c08-11eb-8174-675b4768d1f8.png" width="350">
+<img src="https://user-images.githubusercontent.com/80779555/112127571-ebe1c180-8c08-11eb-991d-b4d0ba28b813.png" width="350">
+
 
