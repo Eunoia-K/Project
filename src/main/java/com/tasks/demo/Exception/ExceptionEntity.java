@@ -16,9 +16,11 @@ public class ExceptionEntity {
 	
 	private String errorCode;
     private String errorMessage;
+    private String status;
     
     @Builder
     public ExceptionEntity(HttpStatus status, String errorCode, String errorMessage){
+    	this.status = "FAIL";
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

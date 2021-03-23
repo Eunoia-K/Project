@@ -1,6 +1,8 @@
 package com.tasks.demo.Service;
 
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,20 +26,26 @@ public class Pay {
 	@Transactional
 	public String save(PaymentDto payDto) {
 		
-		//100원 이상 가능
-		if(payDto.getAmount()<100)
+		//결제금액
+		if(payDto.getAmount()< 100 || payDto.getAmount() > 1000000000)
 		{
-			return "error";
+			throw new ApiException(ExceptionEnum.PAYMENT_01);
+		}else if(payDto.getVat()==null || payDto.getVat()>payDto.getAmount()) {
+			throw new ApiException(ExceptionEnum.PAYMENT_02);
 		}
 		
-		//부가가치세 계산
-		if(payDto.getVat()==null)
+		if(payDto.getCardno().length()<14 && payDto.getCardno().length()>16)
 		{
-			payDto.setVat(Math.round(payDto.getAmount()/11));
+			throw new ApiException(ExceptionEnum.PAYMENT_03);
 		}
-		else if(payDto.getVat()>payDto.getAmount()) {
-			return "error";
+		/*
+		try {
+			SimpleDateFormat  dateFormat = new  SimpleDateFormat("mmyy");
+			dateFormat.parse(payDto.getExpiryDate());
+		}catch( Exception e){
+			throw new ApiException(ExceptionEnum.PAYMENT_03);
 		}
+		*/
 		
 		//카드정보 암호화하기
 		String cardinfo = payDto.getCardno()+"|"+payDto.getExpiryDate()+"|"+payDto.getCvc();
@@ -54,21 +62,20 @@ public class Pay {
 	
 	@Transactional
 	public String cancel(PaymentDto payDto) {
-		
-		Payments payment = paymentResository.findById(payDto.getId()).orElse(null);
-		if(payment == null || payment.getAmount() < payDto.getAmount())
+		Payments pay = getInfo(payDto.getId());
+		if(pay.getAmount()<payDto.getAmount())
 		{
-			return "error";
+			throw new ApiException(ExceptionEnum.CANCEL_01);
 		}
-
+	
 		payDto.setPaymentId(payDto.getId());
-		payDto.setCardInfo(payment.getCardInfo());
+		payDto.setCardInfo(pay.getCardInfo());
 		payDto.setDiv("CANCEL");
 		payDto.setDiscount(0);
 		
-		if(payDto.getVat().equals(null))
+		if(payDto.getVat()==null)
 		{
-			payDto.setVat(payment.getVat());
+			payDto.setVat(pay.getVat());
 		}
 		
 		return paymentResository.save(payDto.toEntity()).getId();
@@ -80,13 +87,10 @@ public class Pay {
 	@Transactional
 	public String updateStrData(String id, PaymentDto paymentDto) {
 	
+		Payments pay = getInfo(id);
 		
-       Payments pay = paymentResository.findById(id)
-               .orElseThrow(() -> new ApiException(ExceptionEnum.NOTINTO_01));
-        
-       
-       String strData = MakeStrData(id,paymentDto);
-       paymentResository.updateStrdata(id,strData);
+		String strData = MakeStrData(id,paymentDto);
+		paymentResository.updateStrdata(id,strData);
 
        return strData;
    }
